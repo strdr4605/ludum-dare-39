@@ -15,5 +15,6 @@
         "src/resource.js",
         "src/app.js",
         "src/AnimationSprite.js"
+        "src/Spaceship.js"
     ]
 }
