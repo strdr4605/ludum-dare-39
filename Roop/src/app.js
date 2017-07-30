@@ -5,6 +5,12 @@ var GameLayer = cc.Layer.extend({
     },
     init: function () {
         var size = cc.winSize;
+        this.startStarLayer = {
+            x: 0,
+            y: 0
+        };
+        this.starLayer = new StarsLayer(this.startStarLayer, 10, 10);
+        this.addChild(this.starLayer);
         var planetsInfo = [
             {
                 name : res.RedPlanrt_png,
