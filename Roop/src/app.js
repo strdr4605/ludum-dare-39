@@ -29,6 +29,11 @@ var HelloWorldLayer = cc.Layer.extend({
             x: size.width / 2,
             y: size.height / 2
         });
+
+        var animationSprite = new AnimationSprite("meteors_128x128_8x8.png", new cc.Size(128,128), new cc.Size(8,8));
+        this.sprite.runAction(animationSprite.actions[0]);
+            //animation is an action like any other cc.action. you can do anySprite.runAction(animation) and it will play the animation
+
         this.addChild(this.sprite, 0);
 
         return true;
@@ -42,4 +47,3 @@ var HelloWorldScene = cc.Scene.extend({
         this.addChild(layer);
     }
 });
-
