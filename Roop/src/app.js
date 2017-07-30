@@ -4,6 +4,8 @@ var GameLayer = cc.Layer.extend({
         this.init();
     },
     init: function () {
+        var size = cc.winSize;
+
         this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png);
         this.spaceshipSprite.setPosition(cc.p(size.width / 2, size.height / 2));
         this.spaceshipSprite.setScale(0.3);
