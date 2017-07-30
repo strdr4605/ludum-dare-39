@@ -5,11 +5,21 @@ var GameLayer = cc.Layer.extend({
     },
     init: function () {
         var size = cc.winSize;
+        var planetsInfo = [
+            {
+                name : res.RedPlanrt_png,
+                position: new cc.Point(size.width / 2, size.height / 2),
+                sizeScale: 0.3
+            }
+        ];
+        var planetLayer = new PlanetLayer(planetsInfo);
+        this.addChild(planetLayer);
 
         this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png);
         this.spaceshipSprite.setPosition(cc.p(size.width / 2, size.height / 2));
         this.spaceshipSprite.setScale(0.3);
-        this.addChild(this.spaceshipSprite, kZindexSpaceship);
+        this.addChild(this.spaceshipSprite);
+
         // var animationSprite = new AnimationSprite("meteors_128x128_8x8.png", new cc.Size(128,128), new cc.Size(8,8));
         // this.sprite.runAction(animationSprite.actions[0]);
     },
