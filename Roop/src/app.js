@@ -4,7 +4,6 @@ var GameLayer = cc.Layer.extend({
         this.init();
     },
     init: function () {
-        this._super();
         var size = cc.winSize;
 
         this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png);
@@ -14,7 +13,7 @@ var GameLayer = cc.Layer.extend({
     },
     onEnter: function() {
         this._super();
-        that = this;
+        var that = this;
         if (cc.sys.capabilities.hasOwnProperty('keyboard')) {
         	cc.eventManager.addListener({
         		event: cc.EventListener.KEYBOARD,
