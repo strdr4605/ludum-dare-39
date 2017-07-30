@@ -5,10 +5,7 @@ var StarsLayer = cc.Layer.extend({
     this.init(start, width, height);
   },
   init: function (start, width, height) {
-    this.spriteSize = {
-      width: 200,
-      height: 200
-    };
+    this.spriteSize = new cc.Size(200, 200);
     this.starsSprites = [];
     this.createSprites(start, width, height);
   },
