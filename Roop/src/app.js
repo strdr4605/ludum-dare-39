@@ -18,12 +18,13 @@ var GameLayer = cc.Layer.extend({
                 sizeScale: 0.3
             }
         ];
-        var planetLayer = new PlanetLayer(planetsInfo);
-        this.addChild(planetLayer);
+        this.planetLayer = new PlanetLayer(planetsInfo);
+        this.addChild(this.planetLayer);
 
-        this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png);
-        this.spaceshipSprite.setPosition(cc.p(size.width / 2, size.height / 2));
-        this.spaceshipSprite.setScale(0.3);
+        this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png, new cc.Size(250,370), new cc.Size(4,5));
+        console.log(this.spaceshipSprite);
+        this.spaceshipSprite.setPosition(new cc.Point(size.width / 2, size.height / 2));
+        this.spaceshipSprite.setScale(2);
         this.addChild(this.spaceshipSprite);
 
         // var animationSprite = new AnimationSprite("meteors_128x128_8x8.png", new cc.Size(128,128), new cc.Size(8,8));
@@ -36,13 +37,53 @@ var GameLayer = cc.Layer.extend({
         	cc.eventManager.addListener({
         		event: cc.EventListener.KEYBOARD,
                 onKeyPressed: function(key, event) {
-                    if(key == 37) {
-                        that.spaceshipSprite.setRotation(that.spaceshipSprite.getRotation() - spaceshipAngleVelocity);
-                    }else if(key == 39) {
-                        that.spaceshipSprite.setRotation(that.spaceshipSprite.getRotation() + spaceshipAngleVelocity);
+        		    switch(key) {
+                        case 37:
+                            that.spaceshipSprite.setRotation(that.spaceshipSprite.getRotation() - spaceshipAngleVelocity);
+                            if(that.spaceshipSprite.getActionByTag(2) === null) {
+                                that.spaceshipSprite.runAction(that.spaceshipSprite.actions[2]);
+                            }
+                            break;
+                        case 38:
+                            //console.log(that.spaceshipSprite.getRotation());
+                            that.planetLayer.move(that.spaceshipSprite.getRotation() + 90);
+                            that.starLayer.move(that.spaceshipSprite.getRotation() + 90);
+                            if(that.spaceshipSprite.getActionByTag(3) === null) {
+                                that.spaceshipSprite.runAction(that.spaceshipSprite.actions[3]);
+                            }
+                            break;
+                        case 39:
+                            that.spaceshipSprite.setRotation(that.spaceshipSprite.getRotation() + spaceshipAngleVelocity);
+                            if(that.spaceshipSprite.getActionByTag(1) === null) {
+                                that.spaceshipSprite.runAction(that.spaceshipSprite.actions[1]);
+                            }
+                            break;
                     }
         		}
         	}, this);
+        	cc.eventManager.addListener({
+                event: cc.EventListener.KEYBOARD,
+                onKeyReleased: function(key, event) {
+                    switch(key) {
+                        case 37:
+                            if(that.spaceshipSprite.getActionByTag(2) != null) {
+                                that.spaceshipSprite.stopAction(that.spaceshipSprite.actions[2]);
+                            }
+                            break;
+                        case 38:
+                            //console.log(that.spaceshipSprite.getRotation());
+                            if(that.spaceshipSprite.getActionByTag(0) != null) {
+                                that.spaceshipSprite.stopAction(that.spaceshipSprite.actions[3]);
+                            }
+                            break;
+                        case 39:
+                            if(that.spaceshipSprite.getActionByTag(1) != null) {
+                                that.spaceshipSprite.stopAction(that.spaceshipSprite.actions[1]);
+                            }
+                            break;
+                    }
+                }
+            }, this);
         }
 
     }

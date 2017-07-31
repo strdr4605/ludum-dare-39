@@ -25,5 +25,9 @@ var StarsLayer = cc.Layer.extend({
       }
       this.starsSprites.push(row);
     }
+  },
+  move: function (angle) {
+      this.setPositionX(this.getPositionX() - 5 * Math.sin(angle));
+      this.setPositionY(this.getPositionY() - 5 * Math.cos(angle));
   }
 });
