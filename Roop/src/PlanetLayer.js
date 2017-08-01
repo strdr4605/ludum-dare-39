@@ -25,7 +25,7 @@ var PlanetLayer = cc.Layer.extend({
         // cc.log('cos'+ Math.cos(piAngle));
         // cc.log('sin'+ Math.sin(piAngle));
 
-        this.setPositionX(this.getPositionX() - spaceshipVelocity * 5 * Math.cos(piAngle));
-        this.setPositionY(this.getPositionY() - spaceshipVelocity * 5 * Math.sin(piAngle));
+        this.setPositionX(this.getPositionX() - kPlanetSpeed * Math.cos(piAngle));
+        this.setPositionY(this.getPositionY() - kPlanetSpeed * Math.sin(piAngle));
     }
 });

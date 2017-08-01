@@ -17,6 +17,7 @@
         "src/AnimationSprite.js",
         "src/Spaceship.js",
         "src/PlanetLayer.js",
-        "src/StarsLayer.js"
+        "src/StarsLayer.js",
+        "src/Input.js"
     ]
 }

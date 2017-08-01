@@ -5,7 +5,7 @@ var GameLayer = cc.Layer.extend({
     },
     init: function () {
         var size = cc.winSize;
-        this.keysPressed = [];
+        this.input = new Input();
 
         this.startStarLayer = {
             x: 0,
@@ -15,7 +15,7 @@ var GameLayer = cc.Layer.extend({
 
         var planetsInfo = [
             {
-                name : res.RedPlanrt_png,
+                name : res.RedPlanet_png,
                 position: new cc.Point(size.width / 2, size.height / 2),
                 sizeScale: 0.3
             }
@@ -39,37 +39,39 @@ var GameLayer = cc.Layer.extend({
         	cc.eventManager.addListener({
         		event: cc.EventListener.KEYBOARD,
                 onKeyPressed: function(key, event) {
-        		    if(that.keysPressed.indexOf(key) == -1){
-        		        that.keysPressed.push(key);
-                    }
+        		    if(! that.input.isKeyPressed(key))
+        		        that.input.addKey(key);
         		},
                 onKeyReleased: function(key, event) {
-                    that.keysPressed.splice(that.keysPressed.indexOf(key), 1)
+        		    if(that.input.isKeyPressed(key))
+        		        that.input.removeKey(key);
                 }
         	}, this);
         }
     },
     update: function(dt) {
-        if(this.keysPressed.length != 0) {
-            if (this.keysPressed.indexOf(38) != -1) {
-                if (this.keysPressed.indexOf(37) != -1) {
-                    this.spaceshipSprite.moveForwardAndLeft();
-                } else if (this.keysPressed.indexOf(39) != -1) {
-                    this.spaceshipSprite.moveForwardAndRight();
-                } else {
-                    this.spaceshipSprite.moveForward();
-                }
-                this.planetLayer.move(-this.spaceshipSprite.getRotation());
-                this.starLayer.move(-this.spaceshipSprite.getRotation());
-            } else if (this.keysPressed.indexOf(37) != -1) {
-                this.spaceshipSprite.rotateLeft();
-            } else if (this.keysPressed.indexOf(39) != -1) {
-                this.spaceshipSprite.rotateRight();
-            }
+        if (this.input.isKeyPressed(this.input.motionType.Forward) && this.input.isKeyPressed(this.input.motionType.Left)) {
+            this.spaceshipSprite.moveForwardAndLeft();
+            this.moveStarsAndPlanets();
+        } else if (this.input.isKeyPressed(this.input.motionType.Forward) && this.input.isKeyPressed(this.input.motionType.Right)) {
+            this.spaceshipSprite.moveForwardAndRight();
+            this.moveStarsAndPlanets();
+        } else if (this.input.isKeyPressed(this.input.motionType.Forward)){
+            this.spaceshipSprite.moveForward();
+            this.moveStarsAndPlanets();
+        }else if (this.input.isKeyPressed(this.input.motionType.Left)) {
+            this.spaceshipSprite.rotateLeft();
+        } else if (this.input.isKeyPressed(this.input.motionType.Right)) {
+            this.spaceshipSprite.rotateRight();
         } else {
             this.spaceshipSprite.stop();
         }
+    },
+    moveStarsAndPlanets: function() {
+        this.planetLayer.move(-this.spaceshipSprite.getRotation());
+        this.starLayer.move(-this.spaceshipSprite.getRotation());
     }
+
 });
 
 var GameScene = cc.Scene.extend({
