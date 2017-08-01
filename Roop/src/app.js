@@ -50,7 +50,6 @@ var GameLayer = cc.Layer.extend({
         }
     },
     update: function(dt) {
-        cc.log(this.keysPressed);
         if(this.keysPressed.length != 0) {
             if (this.keysPressed.indexOf(38) != -1) {
                 if (this.keysPressed.indexOf(37) != -1) {
@@ -60,6 +59,8 @@ var GameLayer = cc.Layer.extend({
                 } else {
                     this.spaceshipSprite.moveForward();
                 }
+                this.planetLayer.move(-this.spaceshipSprite.getRotation());
+                this.starLayer.move(-this.spaceshipSprite.getRotation());
             } else if (this.keysPressed.indexOf(37) != -1) {
                 this.spaceshipSprite.rotateLeft();
             } else if (this.keysPressed.indexOf(39) != -1) {

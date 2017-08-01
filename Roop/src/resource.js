@@ -12,3 +12,5 @@ for (var i in res) {
 }
 
 var spaceshipAngleVelocity = 5;
+
+var spaceshipVelocity = 1
