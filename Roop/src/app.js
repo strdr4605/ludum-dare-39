@@ -5,12 +5,14 @@ var GameLayer = cc.Layer.extend({
     },
     init: function () {
         var size = cc.winSize;
+        this.keysPressed = [];
+
         this.startStarLayer = {
             x: 0,
             y: 0
         };
         this.starLayer = new StarsLayer(this.startStarLayer, 10, 10);
-        this.addChild(this.starLayer);
+
         var planetsInfo = [
             {
                 name : res.RedPlanrt_png,
@@ -18,16 +20,17 @@ var GameLayer = cc.Layer.extend({
                 sizeScale: 0.3
             }
         ];
-        var planetLayer = new PlanetLayer(planetsInfo);
-        this.addChild(planetLayer);
+        this.planetLayer = new PlanetLayer(planetsInfo);
 
-        this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png);
+        this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png, new cc.Size(250,370), new cc.Size(4,5));
         this.spaceshipSprite.setPosition(cc.p(size.width / 2, size.height / 2));
-        this.spaceshipSprite.setScale(0.3);
+        this.spaceshipSprite.setScale(0.4);
+
+        this.addChild(this.starLayer);
+        this.addChild(this.planetLayer);
         this.addChild(this.spaceshipSprite);
 
-        // var animationSprite = new AnimationSprite("meteors_128x128_8x8.png", new cc.Size(128,128), new cc.Size(8,8));
-        // this.sprite.runAction(animationSprite.actions[0]);
+        this.scheduleUpdate();
     },
     onEnter: function() {
         this._super();
@@ -36,15 +39,36 @@ var GameLayer = cc.Layer.extend({
         	cc.eventManager.addListener({
         		event: cc.EventListener.KEYBOARD,
                 onKeyPressed: function(key, event) {
-                    if(key == 37) {
-                        that.spaceshipSprite.setRotation(that.spaceshipSprite.getRotation() - spaceshipAngleVelocity);
-                    }else if(key == 39) {
-                        that.spaceshipSprite.setRotation(that.spaceshipSprite.getRotation() + spaceshipAngleVelocity);
+        		    if(that.keysPressed.indexOf(key) == -1){
+        		        that.keysPressed.push(key);
                     }
-        		}
+        		},
+                onKeyReleased: function(key, event) {
+                    that.keysPressed.splice(that.keysPressed.indexOf(key), 1)
+                }
         	}, this);
         }
-
+    },
+    update: function(dt) {
+        if(this.keysPressed.length != 0) {
+            if (this.keysPressed.indexOf(38) != -1) {
+                if (this.keysPressed.indexOf(37) != -1) {
+                    this.spaceshipSprite.moveForwardAndLeft();
+                } else if (this.keysPressed.indexOf(39) != -1) {
+                    this.spaceshipSprite.moveForwardAndRight();
+                } else {
+                    this.spaceshipSprite.moveForward();
+                }
+                this.planetLayer.move(-this.spaceshipSprite.getRotation());
+                this.starLayer.move(-this.spaceshipSprite.getRotation());
+            } else if (this.keysPressed.indexOf(37) != -1) {
+                this.spaceshipSprite.rotateLeft();
+            } else if (this.keysPressed.indexOf(39) != -1) {
+                this.spaceshipSprite.rotateRight();
+            }
+        } else {
+            this.spaceshipSprite.stop();
+        }
     }
 });
 

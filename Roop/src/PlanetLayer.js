@@ -9,13 +9,23 @@ var PlanetLayer = cc.Layer.extend({
     init: function () {
 
         for(var i = 0; i < this.planetsAmount; i++) {
-            console.log(this.planetsInfo[i].position);
-            console.log(this.planetsInfo[i].size);
+            // console.log(this.planetsInfo[i].position);
+            // console.log(this.planetsInfo[i].size);
             var planet = cc.Sprite.create(this.planetsInfo[i].name);
             planet.setPosition(this.planetsInfo[i].position);
             planet.setScale(this.planetsInfo[i].sizeScale);
             this.addChild(planet);
             this.planets.push(planet);
         }
+    },
+    move: function (angle) {
+        angle += 90;
+        var piAngle = angle/180 * Math.PI
+        // cc.log('test' + angle);
+        // cc.log('cos'+ Math.cos(piAngle));
+        // cc.log('sin'+ Math.sin(piAngle));
+
+        this.setPositionX(this.getPositionX() - spaceshipVelocity * 5 * Math.cos(piAngle));
+        this.setPositionY(this.getPositionY() - spaceshipVelocity * 5 * Math.sin(piAngle));
     }
 });
