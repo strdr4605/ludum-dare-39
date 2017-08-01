@@ -9,7 +9,6 @@ var SpaceshipSprite = AnimationSprite.extend({
     },
     rotateLeft: function() {
         this.setRotation(this.getRotation() - spaceshipAngleVelocity);
-        cc.log(this.getNumberOfRunningActions());
         if(!this.getActionByTag(2)){
             this.stopAllActions();
             this.runAction(this.actions[2].repeatForever());
@@ -26,6 +25,20 @@ var SpaceshipSprite = AnimationSprite.extend({
         if(!this.getActionByTag(3)){
             this.stopAllActions();
             this.runAction(this.actions[3].repeatForever());
+        }
+    },
+    moveForwardAndLeft: function() {
+        this.setRotation(this.getRotation() - spaceshipAngleVelocity);
+        if(!this.getActionByTag(4)){
+            this.stopAllActions();
+            this.runAction(this.actions[4].repeatForever());
+        }
+    },
+    moveForwardAndRight: function() {
+        this.setRotation(this.getRotation() + spaceshipAngleVelocity);
+        if(!this.getActionByTag(5)){
+            this.stopAllActions();
+            this.runAction(this.actions[5].repeatForever());
         }
     },
     stop: function() {

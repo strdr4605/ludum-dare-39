@@ -5,6 +5,7 @@ var GameLayer = cc.Layer.extend({
     },
     init: function () {
         var size = cc.winSize;
+        this.keysPressed = [];
         this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png, new cc.Size(250,370), new cc.Size(4,5));
         this.spaceshipSprite.setPosition(cc.p(size.width / 2, size.height / 2));
         this.spaceshipSprite.setScale(0.4);
@@ -20,23 +21,35 @@ var GameLayer = cc.Layer.extend({
         	cc.eventManager.addListener({
         		event: cc.EventListener.KEYBOARD,
                 onKeyPressed: function(key, event) {
-        		    // cc.log(key);
-                    if(key == 37) {
-                        that.spaceshipSprite.rotateLeft();
-                    }else if(key == 39) {
-                        that.spaceshipSprite.rotateRight();
-                    }else if(key == 38) {
-                        that.spaceshipSprite.moveForward();
+        		    if(that.keysPressed.indexOf(key) == -1){
+        		        that.keysPressed.push(key);
                     }
         		},
                 onKeyReleased: function(key, event) {
-                    that.spaceshipSprite.stop();
+                    that.keysPressed.splice(that.keysPressed.indexOf(key), 1)
                 }
         	}, this);
         }
     },
     update: function(dt) {
-        // cc.log(dt);
+        cc.log(this.keysPressed);
+        if(this.keysPressed.length != 0) {
+            if (this.keysPressed.indexOf(38) != -1) {
+                if (this.keysPressed.indexOf(37) != -1) {
+                    this.spaceshipSprite.moveForwardAndLeft();
+                } else if (this.keysPressed.indexOf(39) != -1) {
+                    this.spaceshipSprite.moveForwardAndRight();
+                } else {
+                    this.spaceshipSprite.moveForward();
+                }
+            } else if (this.keysPressed.indexOf(37) != -1) {
+                this.spaceshipSprite.rotateLeft();
+            } else if (this.keysPressed.indexOf(39) != -1) {
+                this.spaceshipSprite.rotateRight();
+            }
+        } else {
+            this.spaceshipSprite.stop();
+        }
     }
 });
 
