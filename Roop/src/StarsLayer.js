@@ -29,7 +29,7 @@ var StarsLayer = cc.Layer.extend({
   move: function (angle) {
       angle += 90;
       var piAngle = angle/180 * Math.PI
-      this.setPositionX(this.getPositionX() - spaceshipVelocity * Math.cos(piAngle));
-      this.setPositionY(this.getPositionY() - spaceshipVelocity * Math.sin(piAngle));
+      this.setPositionX(this.getPositionX() - kStarsSpeed * Math.cos(piAngle));
+      this.setPositionY(this.getPositionY() - kStarsSpeed * Math.sin(piAngle));
   }
 });
