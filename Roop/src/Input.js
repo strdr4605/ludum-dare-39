@@ -5,7 +5,7 @@ var Input = function () {
         Right: 39
     };
 
-    keysPressed = [];
+    var keysPressed = [];
 
     this.addKey = function (key) {
         keysPressed.push(key);

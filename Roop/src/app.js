@@ -15,16 +15,27 @@ var GameLayer = cc.Layer.extend({
 
         var planetsInfo = [
             {
-                name : res.RedPlanet_png,
-                position: new cc.Point(size.width / 2, size.height / 2),
-                sizeScale: 0.3
+                name : res.PlanetRed_png,
+                position: new cc.Point(size.width / 5, size.height / 1.5),
+                mass: 30
+            },
+            {
+                name : res.PlanetBlue_png,
+                position: new cc.Point(size.width / 1.05, size.height/1.2),
+                mass: 50
+            },
+            {
+                name : res.PlanetGreen_png,
+                position: new cc.Point(size.width / 1.1, size.height / 6),
+                mass: 20
             }
+
         ];
         this.planetLayer = new PlanetLayer(planetsInfo);
 
         this.spaceshipSprite = new SpaceshipSprite(res.Spaceship_png, new cc.Size(250,370), new cc.Size(4,5));
         this.spaceshipSprite.setPosition(cc.p(size.width / 2, size.height / 2));
-        this.spaceshipSprite.setScale(0.4);
+        this.spaceshipSprite.setScale(0.2);
 
         this.addChild(this.starLayer);
         this.addChild(this.planetLayer);
@@ -50,15 +61,16 @@ var GameLayer = cc.Layer.extend({
         }
     },
     update: function(dt) {
+        // cc.log('******************')
+        var gravityForce = this.planetLayer.attract(this.spaceshipSprite);
+        this.spaceshipSprite.applyForce(gravityForce);
+        // cc.log('test' + this.spaceshipSprite.acceleration.x + "  " + this.spaceshipSprite.acceleration.y)
         if (this.input.isKeyPressed(this.input.motionType.Forward) && this.input.isKeyPressed(this.input.motionType.Left)) {
             this.spaceshipSprite.moveForwardAndLeft();
-            this.moveStarsAndPlanets();
         } else if (this.input.isKeyPressed(this.input.motionType.Forward) && this.input.isKeyPressed(this.input.motionType.Right)) {
             this.spaceshipSprite.moveForwardAndRight();
-            this.moveStarsAndPlanets();
         } else if (this.input.isKeyPressed(this.input.motionType.Forward)){
             this.spaceshipSprite.moveForward();
-            this.moveStarsAndPlanets();
         }else if (this.input.isKeyPressed(this.input.motionType.Left)) {
             this.spaceshipSprite.rotateLeft();
         } else if (this.input.isKeyPressed(this.input.motionType.Right)) {
@@ -66,10 +78,15 @@ var GameLayer = cc.Layer.extend({
         } else {
             this.spaceshipSprite.stop();
         }
+        this.spaceshipSprite.applyAccelToVelocity();
+        this.moveStarsAndPlanets();
+        // cc.log('acceleration:  ' + this.spaceshipSprite.acceleration.x + "  " + this.spaceshipSprite.acceleration.y);
+        // cc.log('velocity:  ' + this.spaceshipSprite.velocity.x + "  " + this.spaceshipSprite.velocity.y);
+        this.spaceshipSprite.acceleration = cc.p(0, 0);
     },
     moveStarsAndPlanets: function() {
-        this.planetLayer.move(-this.spaceshipSprite.getRotation());
-        this.starLayer.move(-this.spaceshipSprite.getRotation());
+        this.planetLayer.move(this.spaceshipSprite);
+        this.starLayer.move(this.spaceshipSprite);
     }
 
 });

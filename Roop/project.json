@@ -18,6 +18,7 @@
         "src/Spaceship.js",
         "src/PlanetLayer.js",
         "src/StarsLayer.js",
-        "src/Input.js"
+        "src/Input.js",
+        "src/Planet.js"
     ]
 }
