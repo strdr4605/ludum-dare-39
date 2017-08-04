@@ -26,10 +26,8 @@ var StarsLayer = cc.Layer.extend({
       this.starsSprites.push(row);
     }
   },
-  move: function (angle) {
-      angle += 90;
-      var piAngle = angle/180 * Math.PI
-      this.setPositionX(this.getPositionX() - kStarsSpeed * Math.cos(piAngle));
-      this.setPositionY(this.getPositionY() - kStarsSpeed * Math.sin(piAngle));
+  move: function (spaceship) {
+    this.setPosition(cc.p(this.getPositionX() - kStarsSpeed * spaceship.velocity.x,
+        this.getPositionY() - kStarsSpeed * spaceship.velocity.y));
   }
 });
